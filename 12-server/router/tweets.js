@@ -1,16 +1,8 @@
 import express from "express";
 import "express-async-errors";
 
-let tweets = [
-  {
-    id: "1",
-    text: "드림코더 분들 화이팅!",
-    createdAt: Date.now().toString(),
-    name: "Bob",
-    username: "bob",
-    url: "https://wodgetwhats.com/app/uploads/2019/11/free-profile-photo-watsapp-1.png",
-  },
-];
+import * as tweetRepository from "../data/tweet.js";
+
 const router = express.Router();
 
 // GET /tweets
@@ -18,15 +10,15 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
   const username = req.query.username;
   const data = username
-    ? tweets.filter((tweet) => tweet.username === username)
-    : tweets;
+    ? tweetRepository.getAllByUsername(username)
+    : tweetRepository.getAll();
   res.status(200).json(data);
 });
 
 // GET /tweets/:id
 router.get("/:id", (req, res, next) => {
   const id = req.params.id;
-  const tweet = tweets.find((tweet) => tweet.id === id);
+  const tweet = tweetRepository.getById(id);
   if (tweet) {
     res.status(200).json(tweet);
   } else {
@@ -37,15 +29,8 @@ router.get("/:id", (req, res, next) => {
 // POST /tweets
 router.post("/", (req, res, next) => {
   const { text, name, username } = req.body;
-  const tweet = {
-    id: Date.now().toString(),
-    text,
-    createdAt: new Date(),
-    name,
-    username,
-  };
 
-  tweets = [tweet, ...tweets];
+  const tweet = tweetRepository.create(text, name, username);
   res.status(201).json(tweet);
 });
 
@@ -54,7 +39,7 @@ router.put("/:id", (req, res, next) => {
   const id = req.params.id;
   const text = req.body.text;
 
-  const tweet = tweets.find((tweet) => tweet.id === id);
+  const tweet = tweetRepository.update(id, text);
   if (tweet) {
     res.status(200).json(tweet);
   } else {
@@ -65,7 +50,7 @@ router.put("/:id", (req, res, next) => {
 // delete /tweets/:id
 router.delete("/:id", (req, res, next) => {
   const id = req.params.id;
-  tweets = tweets.filter((tweet) => tweet.id !== id);
+  tweetRepository.remove(id);
   res.sendStatus(204);
 });
 
