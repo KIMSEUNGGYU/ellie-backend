@@ -5,6 +5,7 @@ import { body } from "express-validator";
 import * as tweetControler from "../controller/tweet.js";
 
 import { validate } from "../middleware/validator.js";
+import { isAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -21,18 +22,18 @@ const validateTweet = [
 
 // GET /tweets
 // GET /tweets?username=:username
-router.get("/", tweetControler.getTweets);
+router.get("/", isAuth, tweetControler.getTweets);
 
 // GET /tweets/:id
-router.get("/:id", tweetControler.getTweet);
+router.get("/:id", isAuth, tweetControler.getTweet);
 
 // POST /tweets
-router.post("/", validateTweet, tweetControler.createTweet);
+router.post("/", isAuth, validateTweet, tweetControler.createTweet);
 
 // PUT /tweets/:id
-router.put("/:id", validateTweet, tweetControler.updateTweet);
+router.put("/:id", isAuth, validateTweet, tweetControler.updateTweet);
 
 // delete /tweets/:id
-router.delete("/:id", tweetControler.deleteTweet);
+router.delete("/:id", isAuth, tweetControler.deleteTweet);
 
 export default router;

@@ -9,6 +9,10 @@ const jwtScretKey = "F2dN7x8HVzBWaQeEEDnhsvHXRWqAR63z";
 const jwtExpiresInDays = "2d";
 const bcryptSaltRounds = 12;
 
+function createJwtToken(id) {
+  return jwt.sign({ id }, jwtScretKey, { expiresIn: jwtExpiresInDays });
+}
+
 export async function signup(req, res) {
   const { username, password, name, email, url } = req.body;
 
@@ -50,6 +54,12 @@ export async function login(req, res) {
   res.status(201).json({ token, username });
 }
 
-function createJwtToken(id) {
-  return jwt.sign({ id }, jwtScretKey, { expiresIn: jwtExpiresInDays });
+export async function me(req, res, next) {
+  // 이미 auth 에서 검증은 했지만, me 요청의 응답으로 사용자의 정보를 가져와야 하므로 해당 구문 추가
+  const user = await userRepository.findById(req.userId);
+  if (!user) {
+    return res.status(404).json({ message: `User not found` });
+  }
+
+  res.status(200).json({ token: req.token, username: user.username });
 }
