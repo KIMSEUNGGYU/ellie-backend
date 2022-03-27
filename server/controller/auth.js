@@ -3,10 +3,14 @@ import bcrypt from "bcrypt";
 import {} from "express-async-errors";
 import * as userRepository from "../data/auth.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+console.log(process.env);
+
 // TODO: Make it secure!
-const jwtSecretKey = "F2dN7x8HVzBWaQuEEDnhsvHXRWqAR63z";
-const jwtExpiresInDays = "2d";
-const bcryptSaltRounds = 12;
+// const jwtSecretKey = "F2dN7x8HVzBWaQuEEDnhsvHXRWqAR63z";
+// const jwtExpiresInDays = "2d";
+// const bcryptSaltRounds = 12;
 
 export async function signup(req, res) {
   const { username, password, name, email, url } = req.body;
