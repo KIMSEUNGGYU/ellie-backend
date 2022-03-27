@@ -1,8 +1,8 @@
-import { db } from '../db/database.js';
+import { db } from "../db/database.js";
 
 const SELECT_JOIN =
-  'SELECT tw.id, tw.text, tw.createdAt, tw.userId, us.username, us.name, us.url FROM tweets as tw JOIN users as us ON tw.userId=us.id';
-const ORDER_DESC = 'ORDER BY tw.createdAt DESC';
+  "SELECT tw.id, tw.text, tw.createdAt, tw.userId, us.username, us.name, us.url FROM tweets as tw JOIN users as us ON tw.userId=us.id";
+const ORDER_DESC = "ORDER BY tw.createdAt DESC";
 
 export async function getAll() {
   return db
@@ -24,7 +24,7 @@ export async function getById(id) {
 
 export async function create(text, userId) {
   return db
-    .execute('INSERT INTO tweets (text, createdAt, userId) VALUES(?,?,?)', [
+    .execute("INSERT INTO tweets (text, createdAt, userId) VALUES(?,?,?)", [
       text,
       new Date(),
       userId,
@@ -34,10 +34,10 @@ export async function create(text, userId) {
 
 export async function update(id, text) {
   return db
-    .execute('UPDATE tweets SET text=? WHERE id=?', [text, id])
+    .execute("UPDATE tweets SET text=? WHERE id=?", [text, id])
     .then(() => getById(id));
 }
 
 export async function remove(id) {
-  return db.execute('DELETE FROM tweets WHERE id=?', [id]);
+  return db.execute("DELETE FROM tweets WHERE id=?", [id]);
 }
