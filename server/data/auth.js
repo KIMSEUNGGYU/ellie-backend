@@ -4,7 +4,7 @@ let users = [
   {
     id: "1",
     username: "bob",
-    password: "",
+    password: "$2b$12$EXsC2t3nkcOIxdCW0PsKueDLJsU3htEuDJ/.0XyAmIPV1wCaL1WJu",
     name: "bob@gmail.com",
     url: "https://wodgetwhats.com/app/uploads/2019/11/free-profile-photo-watsapp-1.png",
   },
