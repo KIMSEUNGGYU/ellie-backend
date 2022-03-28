@@ -1,18 +1,16 @@
-import MongoDb from 'mongodb';
-import { config } from '../config.js';
+import Moogoose from "mongoose";
+import { config } from "../config.js";
 
-let db;
 export async function connectDB() {
-  return MongoDb.MongoClient.connect(config.db.host) //
-    .then((client) => {
-      db = client.db();
-    });
+  return Moogoose.connect(config.db.host);
 }
 
+// TODO(GYU): Delete blow
+let db;
 export function getUsers() {
-  return db.collection('users');
+  return db.collection("users");
 }
 
 export function getTweets() {
-  return db.collection('tweets');
+  return db.collection("tweets");
 }
